@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 const morgan = require('morgan');
 import routes from './routes';
-import { port, apiUrl } from './config';
+import { port, apiUrl, environment } from './config';
 import { printRoutes } from './utils';
 import path from 'path';
 
@@ -15,7 +15,7 @@ app.use('/', routes);
 
 morgan('tiny');
 
-if (process.env.NODE_ENV === 'production') {
+if (environment === 'production') {
   app.use(express.static(path.join(__dirname, '../../client/build')));
 
   app.get('*', (req, res) => {

@@ -64,8 +64,8 @@ const App = () => {
   }, [messages]);
 
   const sendMessage = async (messageText: string, threadId: string | null) => {
-
-    const response = await fetch('http://localhost:8000/api/v1/chat', {
+    const apiUrl = process.env.API_URL || '';
+    const response = await fetch(apiUrl + '/api/v1/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

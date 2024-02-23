@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import OpenAI from 'openai';
 import { pollWithDelay, assistantTimeoutMessage } from '../utils';
-import { defaultAssistantId, openaiApiKey } from '../config';
+import { defaultAssistantId } from '../config';
 
 const router = Router();
 
