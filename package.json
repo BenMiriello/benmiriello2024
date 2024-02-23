@@ -6,14 +6,14 @@
   "scripts": {
     "start": "cd server && ts-node src/server.ts",
     "start-dev": "concurrently \"cd server && npm run start-dev\" \"cd client && npm start\"",
-    "heroku-postbuild": "cd .. && cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "engines": {
     "node": "14.x",
     "npm": "6.x"
   },
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^8.2.2",
     "ts-node": "^10.9.2"
   }
