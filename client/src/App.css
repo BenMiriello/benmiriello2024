@@ -44,8 +44,9 @@ body, html {
 
 .main-content-container > .header {
   background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  height: 16rem;
+  height: 12rem;
   width: 100%;
   border-radius: 0.5rem;
 }
