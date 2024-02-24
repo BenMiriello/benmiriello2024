@@ -10,22 +10,75 @@ body, html {
   justify-content: center;
   align-items: center;
   line-height: 1.2rem;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 .app {
-  width: 600px;
-  max-width: 100%;
-  max-height: 80vh;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: row;
 }
 
-.chat-window {
+.main-content-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: stretch;
+  min-width: 24rem;
+  max-width: 44rem;
+  margin: 2rem;
+}
+
+@media (max-width: 600px) {
+  .main-content-container {
+    margin: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.main-content-container > .header {
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 16rem;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.main-content-container > .header:after {
+  content: "";
+  display: block;
+  padding-top: 25%;
+}
+
+.main-content-container > .introduction {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  min-height: 2rem;
+  max-height: 4rem;
+  height: 5%;
+  font-size: larger;
+}
+
+@media (max-width: 600px) {
+  .main-content-container > .introduction {
+    font-size: large;
+  }
+}
+
+.main-content-container > .chat-window {
+  min-height: 50%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  flex-grow: 1;
 }
 
 .messages {
@@ -48,7 +101,6 @@ body, html {
   width: fit-content;
   max-width: 80%;
   animation: fadeIn 0.5s;
-  /* min-width: 1rem; */
 }
 
 .message:last-child {
