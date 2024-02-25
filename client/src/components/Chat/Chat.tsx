@@ -20,8 +20,8 @@ const defaultAssistantMessage = {
     }
   }],
   role: 'assistant',
-  id: 'assistant-prompt',
-  created_at: new Date().getTime(),
+  id: 'assistant-icebreaker',
+  created_at: new Date(Date.now() - 86400000).getTime(),
 };
 
 const Chat = () => {
@@ -36,48 +36,63 @@ const Chat = () => {
     setTimeout(() => {
       setWaiting(false);
       setMessages([defaultAssistantMessage]);
-    }, 1250)
+    }, 1500);
   }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = async (messageText: string, threadId: string | null) => {
-    const apiUrl = process.env.REACT_APP_API_URL || '';
+  const sendMessage = async (message: string | null, threadId: string | null) => {
+    const apiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_URL : '';
+    const payload = { message, threadId };
+
     const response = await fetch(apiUrl + '/api/v1/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message: messageText, threadId }),
+      body: JSON.stringify(payload),
     });
-    const { threadId:newThreadId, messages }:MessageResponse = await response.json();
+
+    const { threadId: newThreadId, messages: newMessages }:MessageResponse = await response.json();
+
     if (threadId !== newThreadId) {
       setThreadId(newThreadId);
     }
-    return messages;
+
+    return newMessages;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault();
-    setWaiting(true);
-    if (!inputValue.trim()) return;
-    const userMessage:UnsentMessage = {
+  const formatUnsentUserMessage = (message: string): UnsentMessage => (
+    {
       content: [{
         text: {
-          value: inputValue
+          value: message
         }
       }],
       role: 'user',
       id: 'unsent-user',
-    };
+    }
+  );
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    if (waiting || !inputValue.trim()) return;
+
+    setWaiting(true);
+    const userMessage = formatUnsentUserMessage(inputValue);
     setMessages([...messages, userMessage]);
     setInputValue('');
+
     const serverMessages = await sendMessage(inputValue, threadId);
     setWaiting(false);
+
     if (serverMessages.length > 0) {
-      setMessages(serverMessages.sort(msg => msg.created_at));
+      setMessages([
+        defaultAssistantMessage,
+        ...serverMessages.sort(msg => msg.created_at)
+      ]);
     }
   };
 

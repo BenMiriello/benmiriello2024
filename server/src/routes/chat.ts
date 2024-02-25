@@ -14,15 +14,16 @@ const openai = new OpenAI();
 router.post(`/api/v1/chat`, async (req: Request, res: Response) => {
   try {
     let { threadId, message, retry } = req.body;
+
     if (!threadId) {
       const thread = await openai.beta.threads.create();
-      threadId = thread.id
+      threadId = thread.id;
     }
 
     if (message) {
       await openai.beta.threads.messages.create(
         threadId,
-        { role: "user", content: message, }
+        { role: "user", content: message },
       );
     }
 
