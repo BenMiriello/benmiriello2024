@@ -1,28 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './Chat.css';
-import robotAvatar from'../../assets/robot.png';
 import LoadingEllipsis from '../LoadingEllipsis/LoadingEllipsis';
+import {
+  formatAssistantIcebreaker,
+  formatUnsentUserMessage,
+} from './offThreadMessages';
 import { ThreadMessage, UnsentMessage, MessageResponse } from '../../../../shared/types';
-
-const geAssistantPrompt = () => {
-  const placeholders = [
-    "Ask me anything",
-    "Ask me your burning questions",
-  ];
-
-  return placeholders[Math.floor(Math.random() * placeholders.length)];
-};
-
-const defaultAssistantMessage = {
-  content: [{
-    text: {
-      value: geAssistantPrompt(),
-    }
-  }],
-  role: 'assistant',
-  id: 'assistant-icebreaker',
-  created_at: new Date(Date.now() - 86400000).getTime(),
-};
+import robotAvatar from'../../assets/robot.png';
+import './Chat.css';
 
 const Chat = () => {
   const [messages, setMessages] = useState<(ThreadMessage|UnsentMessage)[]>([]);
@@ -35,7 +19,7 @@ const Chat = () => {
   useEffect(() => {
     setTimeout(() => {
       setWaiting(false);
-      setMessages([defaultAssistantMessage]);
+      setMessages([formatAssistantIcebreaker()]);
     }, 1500);
   }, []);
 
@@ -64,18 +48,6 @@ const Chat = () => {
     return newMessages;
   };
 
-  const formatUnsentUserMessage = (message: string): UnsentMessage => (
-    {
-      content: [{
-        text: {
-          value: message
-        }
-      }],
-      role: 'user',
-      id: 'unsent-user',
-    }
-  );
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     if (waiting || !inputValue.trim()) return;
@@ -90,7 +62,7 @@ const Chat = () => {
 
     if (serverMessages.length > 0) {
       setMessages([
-        defaultAssistantMessage,
+        formatAssistantIcebreaker(),
         ...serverMessages.sort(msg => msg.created_at)
       ]);
     }
