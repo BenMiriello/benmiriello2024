@@ -29,8 +29,7 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  min-width: 24rem;
-  max-width: 44rem;
+  width: 26rem;
   margin: 2rem;
 }
 
@@ -39,6 +38,12 @@ body, html {
     margin: 1rem;
     width: 100%;
     box-sizing: border-box;
+  }
+}
+
+@media (min-width: 1400px) {
+  .main-content-container {
+    width: 30rem;
   }
 }
 
@@ -63,12 +68,6 @@ body, html {
 .main-content-container > .header > .header-logo {
   height: 5.4rem;
   width: 9rem;
-  /* height: 4rem;
-  width: 6.8rem; */
-  /* height: 2rem;
-  width: 3.4rem; */
-  /* height: 3rem;
-  width: 5.3rem; */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -95,6 +94,7 @@ body, html {
 .main-content-container > .chat-window {
   min-height: 50%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   overflow: hidden;
   flex-grow: 1;
@@ -103,7 +103,7 @@ body, html {
 .messages {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: start;
   flex-grow: 1;
   overflow-y: auto;
   padding: 20px;
@@ -111,13 +111,17 @@ body, html {
   background: #222;
   border-radius: 0.5rem;
   min-height: 5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
+
 .message {
   margin-bottom: 1.5rem;
   padding: 8px;
   background-color: #333;
   border-radius: 0.85rem;
-  width: fit-content;
+  word-wrap: break-word;
   max-width: 80%;
   animation: fadeIn 0.5s;
 }
