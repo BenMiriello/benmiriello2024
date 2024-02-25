@@ -1,0 +1,115 @@
+.chat-window {
+  min-height: 50%;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  margin-bottom: 12px;
+  background: #222;
+  border-radius: 0.5rem;
+  min-height: 5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.message {
+  margin-bottom: 1.5rem;
+  padding: 8px;
+  background-color: #333;
+  border-radius: 0.85rem;
+  word-wrap: break-word;
+  max-width: 80%;
+  animation: fadeIn 0.5s;
+}
+
+.message:last-child {
+  margin-bottom: 0;
+}
+
+.message.user {
+  align-self: flex-end;
+  background-color: #3770b0;
+  border-radius: 0.8rem 0.8rem 0.2rem 0.8rem;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background-color: #575757;
+  display: flex;
+  align-items: center;
+  border-radius: 0.8rem 0.8rem 0.8rem 0.2rem;
+}
+
+.message-form {
+  display: flex;
+  background-color: #333;
+  border-top: 1px solid #333;
+  padding: 0;
+  border-radius: 0.5rem;
+}
+
+.message-input, .send-button {
+  padding: 12px;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.message-input:focus {
+  outline: none;
+  border-radius: 0.5rem;
+}
+
+.message-input {
+  flex-grow: 1;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 1rem;
+  resize: none;
+  overflow-y: auto;
+  line-height: 1.2rem;
+  max-height: 4rem;
+  height: 1.2rem;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+}
+
+.send-button {
+  background-color: #3770b0;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
+}
+
+.send-button:hover {
+  background-color: #57a2ff;
+}
+
+.assistant-avatar {
+  height:1.5rem;
+  width:1.5rem;
+  border-radius: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+#assistant-prompt {
+  animation: fadeIn 1.25s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

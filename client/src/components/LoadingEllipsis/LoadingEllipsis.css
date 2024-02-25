@@ -10,7 +10,7 @@
   width: 8px;
   height: 8px;
   margin: 0 3px;
-  background-color: #333; /* Adjust color to fit your design */
+  background-color: #333;
   border-radius: 50%;
   animation: loadingEllipsis 1.4s infinite ease-in-out both;
 }
