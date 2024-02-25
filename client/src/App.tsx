@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import robotAvatar from'./assets/robot.png';
 import cardImage from './assets/cardImage.png';
-// import logoBGMOutline from './assets/logoBGMOutline.png';
+import logoBGMOutline from './assets/logoBGMOutlineBW.png';
 import LoadingEllipsis from './components/LoadingEllipsis';
 
 interface ThreadContent {
@@ -121,7 +121,7 @@ const App = () => {
     <div className="app">
       <div className='main-content-container'>
         <div className='header' style={{ backgroundImage: `url(${cardImage})` }}>
-          {/* <div className='header-logo' style={{ backgroundImage: `url(${logoBGMOutline})`}}></div> */}
+          <div className='header-logo' style={{ backgroundImage: `url(${logoBGMOutline})`}}></div>
         </div>
         <div className='introduction'>
           Hi, I'm Ben Miriello! I made this site so you can:

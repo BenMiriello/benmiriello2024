@@ -50,7 +50,8 @@ body, html {
   width: 100%;
   border-radius: 0.5rem;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 
 .main-content-container > .header:after {
@@ -60,16 +61,18 @@ body, html {
 }
 
 .main-content-container > .header > .header-logo {
+  height: 5.4rem;
+  width: 9rem;
   /* height: 4rem;
   width: 6.8rem; */
   /* height: 2rem;
   width: 3.4rem; */
-  height: 3rem;
-  width: 5.3rem;
+  /* height: 3rem;
+  width: 5.3rem; */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin: 1rem;
+  margin: 1.75rem;
 }
 
 .main-content-container > .introduction {
