@@ -66,8 +66,7 @@ const App = () => {
   }, [messages]);
 
   const sendMessage = async (messageText: string, threadId: string | null) => {
-    console.log(process.env, process.env.API_URL)
-    const apiUrl = process.env.API_URL || '';
+    const apiUrl = process.env.REACT_APP_API_URL || '';
     const response = await fetch(apiUrl + '/api/v1/chat', {
       method: 'POST',
       headers: {
