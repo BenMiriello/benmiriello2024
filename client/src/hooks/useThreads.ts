@@ -12,7 +12,6 @@ interface UseThreadsReturn {
   reload: (threadId?: string) => Promise<boolean>;
   threadId: string | null;
   setThreadId: Dispatch<SetStateAction<string | null>>;
-  // setLocalStorageThreadId: (threadId: string) => void;
   retrieveLocalStorageThreadId: () => string | null;
   messages: IAnyMessage[];
   setMessages: Dispatch<SetStateAction<IAnyMessage[]>>;
@@ -72,9 +71,8 @@ const useThreads = (): UseThreadsReturn => {
     } catch (error) {
       console.error(error);
       setLoading(false);
-
-      return false;
       // handle error
+      return false;
     }
   };
 
@@ -127,7 +125,7 @@ const useThreads = (): UseThreadsReturn => {
         .filter(message => message.text)
         .sort(message => message.created_at);
       setMessages([assistantPrompt, ...latestMessages]);
-      // add back the default message here
+      // add back the default message
       setLoading(false);
       return true;
     } catch (error) {
