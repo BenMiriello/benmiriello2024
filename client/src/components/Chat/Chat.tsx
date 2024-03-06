@@ -1,71 +1,58 @@
 import React, { useEffect, useRef, useState } from 'react';
 import LoadingEllipsis from '../LoadingEllipsis/LoadingEllipsis';
-import {
-  formatAssistantIcebreaker,
-  formatUnsentUserMessage,
-} from './offThreadMessages';
-import { ThreadMessage, UnsentMessage, MessageResponse } from '../../../../shared/types';
-import robotAvatar from'../../assets/robot.png';
+import Message from './Message/Message';
+import { useThreads } from '../../hooks';
+import { getAssistantPrompt, assistantReloadPrompts } from '../../utils/formatMessages';
 import './Chat.css';
 
 const Chat = () => {
-  const [messages, setMessages] = useState<(ThreadMessage|UnsentMessage)[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
-  const [threadId, setThreadId] = useState<(string|null)>(null);
-  const [waiting, setWaiting] = useState<boolean>(true);
-
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const thread = useThreads();
 
   useEffect(() => {
-    setTimeout(() => {
-      setWaiting(false);
-      setMessages([formatAssistantIcebreaker()]);
-    }, 1500);
-  }, []);
+    const previousThreadId = thread.retrieveLocalStorageThreadId();
+    if (previousThreadId) {
+      thread.setLoading(false);
+      const handleClick: React.MouseEventHandler<HTMLElement> = (e) => {
+        e.preventDefault();
+        thread.reload(previousThreadId);
+      }
+      thread.setMessages(assistantReloadPrompts(handleClick));
+    } else {
+      const assistantPrompt = getAssistantPrompt();
+      thread.createThread();
+      setTimeout(() => {
+        thread.setMessages([assistantPrompt]);
+        thread.setLoading(false);
+      }, 1500);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const sendMessage = async (message: string | null, threadId: string | null) => {
-    const apiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_URL : '';
-    const payload = { message, threadId };
-
-    const response = await fetch(apiUrl + '/api/v1/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const { threadId: newThreadId, messages: newMessages }:MessageResponse = await response.json();
-
-    if (threadId !== newThreadId) {
-      setThreadId(newThreadId);
-    }
-
-    return newMessages;
-  };
+  }, [thread.messages]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    thread.setLoading(true);
     e.preventDefault();
-    if (waiting || !inputValue.trim()) return;
 
-    setWaiting(true);
-    const userMessage = formatUnsentUserMessage(inputValue);
-    setMessages([...messages, userMessage]);
-    setInputValue('');
+    if (thread.loading || !inputValue.trim()) return;
 
-    const serverMessages = await sendMessage(inputValue, threadId);
-    setWaiting(false);
+    let { threadId } = thread;
+    if (!threadId) threadId = await thread.createThread();
+    if (!threadId) return;
 
-    if (serverMessages.length > 0) {
-      setMessages([
-        formatAssistantIcebreaker(),
-        ...serverMessages.sort(msg => msg.created_at)
-      ]);
-    }
+    const messageSuccess = await thread.sendMessage(inputValue, threadId);
+
+    if (messageSuccess) setInputValue('');
+    else return;
+
+    const run = await thread.createRun(threadId);
+    if (!run?.id) return;
+
+    const result = await thread.pollRun(run.id, threadId);
+    if (result) await thread.reload(threadId);
   };
 
   const adjustTextareaHeight = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -84,15 +71,8 @@ const Chat = () => {
   return (
     <div className="chat-window">
       <div className="messages">
-        {messages.map((msg) => (
-          <div key={msg.id} id={msg.id} className={`message ${msg.role}`}>
-            { msg.role !== 'assistant' ? null :
-              <img src={robotAvatar} alt='face of a friendly robot assistant' className='assistant-avatar' />
-            }
-            {msg.content[0].text.value}
-          </div>
-        ))}
-        { waiting && <LoadingEllipsis />}
+        { thread.messages.map((message) => <Message key={message.id} message={message} />) }
+        { thread.loading && <LoadingEllipsis />}
         <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSubmit} className="message-form">

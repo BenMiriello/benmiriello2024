@@ -1,9 +1,8 @@
 const timeoutMessages = [
   'Request timed out. Trying carrier pigeons instead.',
-  'Request timed out. Attempting dangerous rituals to get it going again',
   'Request timed out. Hiring new server gnomes.',
   'Request timed out. Reopening diplomatic channels with openai.',
-  'Request timed out. Retrying new hailing frequencies.',
+  'Request timed out. Trying new hailing frequencies.',
 ];
 
 export const assistantTimeoutMessage = () => ({

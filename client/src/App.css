@@ -39,6 +39,10 @@ body, html {
     width: 100%;
     box-sizing: border-box;
   }
+
+  .main-content-container > .header {
+    margin-bottom: 1rem;
+  }
 }
 
 @media (min-width: 1400px) {
@@ -57,6 +61,7 @@ body, html {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  margin-bottom: 2rem;
 }
 
 .main-content-container > .header:after {

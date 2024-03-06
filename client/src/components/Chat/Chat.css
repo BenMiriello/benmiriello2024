@@ -30,7 +30,7 @@
   border-radius: 0.85rem;
   word-wrap: break-word;
   max-width: 80%;
-  animation: fadeIn 0.5s;
+  animation: fadeUp 0.5s;
 }
 
 .message:last-child {
@@ -49,6 +49,27 @@
   display: flex;
   align-items: center;
   border-radius: 0.8rem 0.8rem 0.8rem 0.2rem;
+}
+
+.message#assistant-reload-button {
+  background-color: #3770b0;
+  box-shadow: inset -4px -4px 8px #295a8e, inset 4px 4px 8px #5297e8;
+  animation: colorChange 3s, fadeIn 1.5s;
+  border-radius: 1.5rem;
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  cursor: pointer;
+}
+
+.message#assistant-reload-button:hover {
+  background-color: #5388c6;
+  box-shadow: inset -4px -4px 8px #35689e, inset 4px 4px 8px #7bace3;
+}
+
+.message#assistant-reload-button:active {
+  background-color: #3770b0;
+  box-shadow: inset 4px 4px 4px #2b5787, inset -4px -4px 4px #35689e;
 }
 
 .message-form {
@@ -106,10 +127,26 @@
 }
 
 #assistant-prompt {
-  animation: fadeIn 1.25s;
+  animation: fadeUp 1.25s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; }
+  25% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes colorChange {
+  0% { background-color: #3770b0; }
+  33% { background-color: #3770b0; }
+  66% {
+    background-color: #5c90cd;
+    box-shadow: inset -4px -4px 8px #35689e, inset 4px 4px 8px #95c7ff;
+  }
+  100% { background-color: #3770b0; }
 }

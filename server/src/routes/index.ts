@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import chat from './chat';
+import threadRoutes from './threadRoutes';
+import messageRoutes from './messageRoutes';
+import runRoutes from './runRoutes';
 
 const router = Router();
 
-router.get('/api/v1/', (req, res) => {
-  res.json({ message: 'oll korrect' });
-});
-
-router.use('/', chat);
+router.use('/', threadRoutes);
+router.use('/', messageRoutes);
+router.use('/', runRoutes);
 
 export default router;
